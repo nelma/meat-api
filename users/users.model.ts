@@ -1,25 +1,32 @@
-const users = [
-    {id: '1', name: 'Nome 1', email: 'teste@teste.com.br'},
-    {id: '2', name: 'Nome 2', email: 'teste-1@teste.com.br'}
-]
+import * as mongoose from 'mongoose'
 
-export class User {
-
-    //metodo com uma promise que retorna um array
-    static findAll(): Promise<any[]> { 
-        return Promise.resolve(users)
-    }
-
-    static findById(id: string): Promise<any> {
-        return new Promise( resolve => {
-            const filtered = users.filter( user => user.id === id )
-            let user = undefined
-            if(filtered.length > 0) {
-                user = filtered[0]
-            }
-
-            resolve(user)
-        } )
-    }
-
+//interface aenas para controle static
+//em typescript nas interfaces não viram objetos
+export interface User extends mongoose.Document {
+    name: string,
+    email: string,
+    password: string
 }
+
+//String é do tipo JS e nao do Typescript
+//unique: noa criauma opcao de validacaodentrodo mongoose, mas sim criar um indice e unico dentroda cleção
+
+//definindo um schema
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    email: {
+        type: String,
+        unique: true
+    },
+    password: {
+        type: String,
+        select: false
+    }
+})
+
+//criando um model
+//infere o nome para o nome da collection
+//o model podereceber um tipo generics -> User
+export const User = mongoose.model<User>('User', userSchema)
