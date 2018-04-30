@@ -4,16 +4,17 @@ import * as mongoose from 'mongoose'
 import * as bcrypt from 'bcrypt'
 import { environment } from '../common/environment';
 
-//interface aenas para controle static
+//interface apenas para controle statico
 //em typescript nas interfaces não viram objetos
+//representa document User
 export interface User extends mongoose.Document {
     name: string,
     email: string,
     password: string
 }
 
-//String é do tipo JS e nao do Typescript
-//unique: noa criauma opcao de validacaodentrodo mongoose, mas sim criar um indice e unico dentroda cleção
+//String é do tipo JS e nao do Typescript, ou seja string tipada
+//unique: nao cria uma opcao de validacaodentrodo mongoose, mas sim criar um indice e unico dentro da coleção
 
 //definindo um schema
 const userSchema = new mongoose.Schema({

@@ -10,6 +10,7 @@ export abstract class Router extends EventEmitter{
         return (document) => {
             if(document) {
 
+                
                 //emitindo um evento para ser executado antes da resposta. Evento síncrono
                 this.emit('beforeRender', document)
 
@@ -18,6 +19,19 @@ export abstract class Router extends EventEmitter{
                 throw new NotFoundError('Documento não encontrado')
             }
             return next()
+        }
+    }
+
+    renderAll(response: restify.Response, next: restify.Next) {
+        return (documents: any[]) => {
+            if(documents) {
+                documents.forEach(document => {
+                    this.emit('beforeRender', document)
+                })
+                response.json(documents)
+            } else {
+                response.json([])
+            }
         }
     }
 }
