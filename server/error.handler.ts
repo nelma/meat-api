@@ -12,6 +12,7 @@ export const handlerError = (req: restify.Request, resp: restify.Response ,err, 
         }
     }
 
+    //statusCode da resposta
     switch(err.name) {
         case 'MongoError':
             if(err.code === 11000) err.statusCode = 400

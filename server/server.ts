@@ -50,6 +50,7 @@ export class Server {
                 })
 
                 //registrando um evento
+                //callback para tratar erros
                 this.application.on('restifyError', handlerError)
 
             } catch(error) {

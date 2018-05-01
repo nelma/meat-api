@@ -7,6 +7,10 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         super()
     }
 
+    protected prepareOne(query: mongoose.DocumentQuery<D, D>): mongoose.DocumentQuery<D, D> {
+        return query
+    }
+
     //validando formato ID passado no query param
     validateId = (req, resp, next) => {
         if(!mongoose.Types.ObjectId.isValid(req.params.id)) 
@@ -23,7 +27,9 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     }
 
     findById = (req, resp, next) => {
-        this.model.findById(req.params.id)
+        //faz o prepareOnde antes de se inscrever no then (Promisse)
+
+        this.prepareOne(this.model.findById(req.params.id))
                   .then( this.render(resp, next) )
                   .catch(next)
     }

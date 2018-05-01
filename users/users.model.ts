@@ -91,5 +91,5 @@ userSchema.pre('update', updateMiddleware) //update do put
 
 //criando um model
 //infere o nome para o nome da collection
-//o model podereceber um tipo generics -> User
+//o model pode receber um tipo generics -> User
 export const User = mongoose.model<User>('User', userSchema)
