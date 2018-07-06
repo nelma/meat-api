@@ -38,6 +38,9 @@ class UsersRouter extends ModelRouter<User> {
 
         //eh permitido passar um array de callbacks
 
+        //usar header accept-version para passar a versao. Pode passar por range tb
+        //se nao tiver version o Restfy pega a mais atual
+
         application.get({path:'/users', version: '2.0.0'}, [this.findByEmail, this.findAll])
         application.get({path:'/users', version: '1.0.0'}, this.findAll)
         application.get('/users/:id', [this.validateId, this.findById])
