@@ -5,6 +5,7 @@ import {Server} from '../server/server';
 import {environment} from '../common/environment';
 import {userRouter} from './users.router';
 import {User} from './users.model';
+import { response } from 'spdy';
 
 let address: string
 let server: Server
@@ -19,6 +20,8 @@ beforeAll(() => {
                .then(() => User.remove({}).exec())
                .catch(console.error)
 })
+
+//para rodar só um teste: test.only e para pular test.skip
 
 test('get /users', () => {
   //eh um teste async, dessaforma precisa colocar o 'return' para o jest saber que é uma promise
@@ -47,6 +50,38 @@ test('post /users', () => {
       expect(response.body.password).toBeUndefined()
       expect(response.body.cpf).toBe('999.999.999-99')
     }).catch(fail)
+})
+
+test('get /users/aaaa - not found', () => {
+  return request(address)
+  .get('/users/aaaa')
+  .then(response => {
+    expect(response.status).toBe(404)
+  }).catch(fail)
+})
+
+test('patch /users/:id', () => {
+  return request(address)
+    .post('/users')
+    .send({
+      name: 'usuario2',
+      email: 'usuario2@email.com',
+      password: '123456'
+    })
+    .then(response => 
+        request(address)
+        .patch(`/users/${response.body._id}`)
+        .send({
+          name: 'usuario2-patch'
+        }))
+    .then(response => {
+      expect(response.status).toBe(200)
+      expect(response.body._id).toBeDefined()
+      expect(response.body.name).toBe('usuario2-patch')
+      expect(response.body.email).toBe('usuario2@email.com')
+      expect(response.body.password).toBeUndefined()
+    })
+    .catch(fail)
 })
 
 afterAll(() => {
