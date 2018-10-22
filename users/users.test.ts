@@ -6,7 +6,12 @@ import {environment} from '../common/environment';
 import {userRouter} from './users.router';
 import {User} from './users.model';
 
+import { beforeAllTests, afterAllTests } from '../jest.startup';
+
 let address: string = (<any>global).address;
+
+beforeAll(beforeAllTests);
+afterAll(afterAllTests);
 
 //para rodar só um teste: test.only e para pular test.skip
 

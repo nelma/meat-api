@@ -2,7 +2,12 @@ import 'jest';
 import * as request from 'supertest';
 import { environment } from '../common/environment';
 
+import { beforeAllTests, afterAllTests  } from '../jest.startup';
+
 let address: string = (<any>global).address;
+
+beforeAll(beforeAllTests);
+afterAll(afterAllTests);
 
 test('get /reviews', () => {
   return request(address)

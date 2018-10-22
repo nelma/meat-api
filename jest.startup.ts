@@ -10,7 +10,7 @@ import { Review } from './reviews/reviews.model';
 
 let server: Server
 
-const beforeAllTests = () => {
+export const beforeAllTests = () => {
   environment.db.url = process.env.DB_URL || 'mongodb://localhost/meat-api-test-db'
   environment.server.port = process.env.SERVER_PORT || 3001
   server = new Server();
@@ -24,13 +24,13 @@ const beforeAllTests = () => {
   .then(() => Review.remove({}).exec())
 }
 
-const afterAllTests = () => {
+export const afterAllTests = () => {
   return server.shutdow()
 }
 
 //jestCli.run() faz com que o jest procure os arquivos de teste e execute
 
-beforeAllTests()
+/* beforeAllTests()
 .then(() => jestCli.run())
 .then(() => afterAllTests())
-.catch(console.error);
+.catch(console.error); */
